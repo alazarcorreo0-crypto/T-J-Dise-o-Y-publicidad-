@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>T&J DISEÑO Y PUBLICIDAD - App</title>
+    <title>T&J DISEÑO Y PUBLICIDAD - App Pro</title>
     <style>
         :root {
             --primary: #1e1e2f;
@@ -35,11 +35,10 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: 80px; /* Espacio para la barra inferior */
+            padding-bottom: 80px;
             font-size: 15px;
         }
 
-        /* Encabezado fijo superior */
         .app-header {
             background-color: var(--card);
             padding: 16px;
@@ -61,7 +60,6 @@
             color: var(--accent);
         }
 
-        /* Contenedor de las páginas */
         .app-page {
             display: none;
             padding: 16px;
@@ -77,7 +75,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Estilos de Tarjetas (Cards) optimizadas para touch */
         .card {
             background: var(--card);
             border-radius: 14px;
@@ -96,7 +93,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Formulario Móvil */
         .form-group {
             margin-bottom: 14px;
         }
@@ -129,29 +125,35 @@
             box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
         }
 
-        /* Botones optimizados para dedos grandes */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
         .btn {
             width: 100%;
             padding: 14px;
             border: none;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: background 0.2s;
         }
 
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-accent { background-color: var(--accent); color: white; }
-        .btn-danger { background-color: #f8d7da; color: #721c24; padding: 8px; font-size: 12px; }
+        .btn-danger { background-color: #f8d7da; color: #721c24; padding: 8px; font-size: 12px; width: auto; }
         .btn-secondary { background-color: #e2eafc; color: #4a5759; margin-bottom: 12px;}
+        .btn-small { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 6px; }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text); }
 
-        /* Lista de productos agregados en tarjeta compacta */
         .added-item {
             display: flex;
             justify-content: space-between;
@@ -161,7 +163,6 @@
         }
         .added-item:last-child { border-bottom: none; }
 
-        /* Barra de navegación inferior móvil */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -191,22 +192,10 @@
             height: 100%;
         }
 
-        .nav-item.active {
-            color: var(--accent);
-        }
+        .nav-item.active { color: var(--accent); }
+        .nav-icon { font-size: 20px; margin-bottom: 4px; }
 
-        .nav-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        /* Bloques de Estado e Historial */
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-        }
+        .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
         .status-won { background-color: var(--status-won-bg); color: var(--status-won-text); }
         .status-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
         .status-lost { background-color: var(--status-lost-bg); color: var(--status-lost-text); }
@@ -219,59 +208,53 @@
             border: 1px solid var(--border);
         }
 
-        /* Caja de totales */
+        .history-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         .total-box {
             background-color: #fafafa;
             border-radius: 10px;
             padding: 12px;
             margin-top: 10px;
         }
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 13px;
-        }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
 
-        /* Slider de Margen estilizado */
-        .slider-container {
-            margin: 10px 0;
-        }
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: #e0e0e0;
-            height: 6px;
-            border-radius: 3px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-        }
+        .slider-container { margin: 10px 0; }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: #e0e0e0; height: 6px; border-radius: 3px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-        /* Ocultar plantilla PDF */
         #pdf-template { display: none; }
+        
+        .badge-edition {
+            background-color: #e0f7fa;
+            color: #0077b6;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: none;
+        }
     </style>
-    <!-- Librería PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-    <!-- Encabezado Fijo -->
     <div class="app-header">
         <h1>T&J <span>DISEÑO Y PUBLICIDAD</span></h1>
     </div>
 
-    <!-- PESTAÑA 1: CREAR COTIZACIÓN -->
+    <!-- PESTAÑA 1: CREAR / EDITAR COTIZACIÓN -->
     <div id="page-quote" class="app-page active">
-        <button class="btn btn-secondary" onclick="limpiarFormulario()">🔄 Nueva / Limpiar Cotización</button>
+        <div id="editBadge" class="badge-edition">✏️ Modo Edición Activo (Modificando Cotización)</div>
+        <button class="btn btn-secondary" onclick="limpiarFormulario()">🔄 Nueva / Cancelar Edición</button>
         
         <div class="card">
             <div class="card-title">Cliente y Control</div>
+            <input type="hidden" id="editingFolio" value="">
             <div class="form-group">
                 <label>Cliente / Empresa</label>
                 <input type="text" id="clientName" placeholder="Nombre del cliente" onchange="agregarClienteAAgenda(this.value)">
@@ -288,9 +271,9 @@
                 <div class="form-group">
                     <label>Estado Inicial</label>
                     <select id="quoteStatus">
-                        <option value="Pendiente">🟡 Pensante / Pendiente</option>
-                        <option value="Vendido">🟢 Comprada / Cerrada</option>
-                        <option value="Rechazado">🔴 No Comprada</option>
+                        <option value="Pendiente">💡 Pensante / Pendiente</option>
+                        <option value="Vendido">✅ Comprada / Cerrada</option>
+                        <option value="Rechazado">❌ No Comprada</option>
                     </select>
                 </div>
             </div>
@@ -300,7 +283,7 @@
             <div class="card-title">Añadir Concepto</div>
             <div class="form-group">
                 <label>Descripción del Producto o Servicio</label>
-                <input type="text" id="prodName" placeholder="Ej. Lona publicitaria, Logotipo">
+                <input type="text" id="prodName" placeholder="Ej. 3m Lona cuadrada, Tarjetas de presentación">
             </div>
             <div class="grid-2">
                 <div class="form-group">
@@ -309,12 +292,12 @@
                 </div>
                 <div class="form-group">
                     <label>Cantidad</label>
-                    <input type="number" id="prodQty" value="1" min="1">
+                    <input type="number" id="prodQty" value="1" min="0.1" step="any">
                 </div>
             </div>
             <div class="form-group">
                 <label>Precio Costo Base ($)</label>
-                <input type="number" id="prodCost" placeholder="0.00">
+                <input type="number" id="prodCost" placeholder="0.00" step="any">
             </div>
             <div class="form-group slider-container">
                 <label id="marginLabel">Porcentaje a Sumar: 30%</label>
@@ -324,54 +307,50 @@
         </div>
 
         <div class="card">
-            <div class="card-title">Resumen Actual</div>
+            <div class="card-title">Conceptos en este Presupuesto</div>
             <div id="addedItemsContainer">
                 <p style="text-align: center; color: var(--muted); padding: 10px; font-size: 13px;">No hay conceptos agregados aún.</p>
             </div>
             <div class="total-box">
-                <div class="total-row" style="opacity: 0.7;">
-                    <span>Costo total inversión:</span>
+                <div class="total-row" style="opacity: 0.6;">
+                    <span>Costo total producción:</span>
                     <span id="sumTotalCost">$0.00</span>
                 </div>
                 <div class="total-row" style="color: var(--accent); font-weight: bold;">
-                    <span>Ganancia estimada:</span>
+                    <span>Utilidad estimada:</span>
                     <span id="sumProfit">$0.00</span>
                 </div>
                 <div class="total-row" style="font-size: 16px; font-weight: 800; border-top: 1px dashed #ccc; padding-top: 8px; margin-top: 6px;">
-                    <span>TOTAL VENTA:</span>
+                    <span>TOTAL COMPLETO:</span>
                     <span id="sumTotalSale">$0.00</span>
                 </div>
             </div>
-            <button class="btn btn-accent" style="margin-top: 15px;" onclick="saveAndGeneratePDF()">💾 Guardar y Generar PDF</button>
+            <button class="btn btn-accent" style="margin-top: 15px;" onclick="saveAndGeneratePDF()">💾 Guardar Cambios y Bajar PDF</button>
         </div>
     </div>
 
-    <!-- PESTAÑA 2: HISTORIAL DE COTIZACIONES -->
+    <!-- PESTAÑA 2: HISTORIAL -->
     <div id="page-history" class="app-page">
         <div class="card">
             <div class="card-title">Filtrar Cotizaciones</div>
             <div class="form-group">
-                <label>Buscar por Fecha</label>
+                <label>Buscar por Fecha Exacta</label>
                 <input type="date" id="filterDate" onchange="renderHistory()">
             </div>
-            <button class="btn btn-primary" style="padding: 8px; font-size: 12px;" onclick="limpiarFiltroFecha()">Mostrar Todas</button>
+            <button class="btn btn-outline btn-small" onclick="limpiarFiltroFecha()">Ver Todas</button>
         </div>
-        <div id="historyListContainer">
-            <!-- Cargado dinámicamente -->
-        </div>
+        <div id="historyListContainer"></div>
     </div>
 
-    <!-- PESTAÑA 3: AGENDA DE CLIENTES -->
+    <!-- PESTAÑA 3: CLIENTES -->
     <div id="page-clients" class="app-page">
         <div class="card">
-            <div class="card-title">Mis Clientes Frecuentes</div>
-            <div id="clientsListContainer">
-                <!-- Cargado dinámicamente -->
-            </div>
+            <div class="card-title">Directorio de Clientes</div>
+            <div id="clientsListContainer"></div>
         </div>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL) -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <div class="nav-bar">
         <div class="nav-item active" onclick="switchPage('quote', this)">
             <div class="nav-icon">📝</div>
@@ -388,57 +367,56 @@
     </div>
 
 
-    <!-- ================= PLANTILLA IMPRESIÓN / PDF EN LIMPIO ================= -->
-    <div id="pdf-template">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 20px;">
+    <!-- ================= PLANTILLA DE IMPRESIÓN PREMIUM PARA EL PDF ================= -->
+    <div id="pdf-template" style="padding: 10px; font-family: Arial, sans-serif; color: #222;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 25px;">
             <div>
-                <h1 style="color: #1e1e2f; font-size: 24px; font-weight: bold; margin-bottom: 3px;">T&J DISEÑO Y PUBLICIDAD</h1>
-                <p style="font-size: 11px; color: #555;">Soluciones Creativas e Impresión Profesional</p>
-                <p style="font-size: 11px; color: #00b4d8; font-weight: bold; margin-top: 5px;" id="pdfFolio">FOLIO: #0000</p>
+                <h1 style="color: #1e1e2f; font-size: 28px; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">T&J DISEÑO Y PUBLICIDAD</h1>
+                <p style="font-size: 12px; color: #00b4d8; font-weight: bold; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Soluciones Creativas e Impresión Profesional</p>
             </div>
             <div style="text-align: right;">
-                <h2 style="font-size: 13px; color: #666; text-transform: uppercase;">Presupuesto</h2>
-                <p style="font-size: 12px;" id="pdfDate">-</p>
+                <div style="background-color: #1e1e2f; color: white; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block;" id="pdfFolio">#0000</div>
+                <p style="font-size: 12px; color: #666; margin: 6px 0 0 0;" id="pdfDate">-</p>
             </div>
         </div>
 
-        <div style="background-color: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border: 1px solid #edf2f4; font-size: 12px;">
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 15px; border: 1px solid #edf2f4;">
             <div>
-                <p style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 9px; margin-bottom: 2px;">Cliente:</p>
-                <p style="font-size: 14px; font-weight: bold;" id="pdfClient">-</p>
-                <p id="pdfLocation">-</p>
+                <span style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 10px;">PRESUPUESTO PARA:</span>
+                <p style="font-size: 16px; font-weight: bold; color: #1e1e2f; margin: 4px 0;" id="pdfClient">-</p>
+                <p style="font-size: 12px; color: #4a5759; margin: 0;" id="pdfLocation">-</p>
             </div>
-            <div style="text-align: right;">
-                <p style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 9px; margin-bottom: 2px;">Estado:</p>
-                <p style="font-weight: bold;" id="pdfStatus">-</p>
+            <div style="text-align: right; border-left: 2px solid #edf2f4; padding-left: 15px;">
+                <span style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 10px;">ESTADO ACTUAL:</span>
+                <p style="font-size: 13px; font-weight: bold; margin: 6px 0 0 0; text-transform: uppercase;" id="pdfStatus">-</p>
             </div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 12px;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
             <thead>
-                <tr style="background-color: #1e1e2f; color: white;">
-                    <th style="padding: 8px; text-align: left;">Descripción</th>
-                    <th style="padding: 8px; text-align: center;">Unidad</th>
-                    <th style="padding: 8px; text-align: center;">Cant.</th>
-                    <th style="padding: 8px; text-align: right;">P. Unitario</th>
-                    <th style="padding: 8px; text-align: right;">Importe</th>
+                <tr style="background-color: #1e1e2f; color: white; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <th style="padding: 10px; text-align: left; border-top-left-radius: 6px; border-bottom-left-radius: 6px;">Descripción del Concepto</th>
+                    <th style="padding: 10px; text-align: center;">Unidad</th>
+                    <th style="padding: 10px; text-align: center;">Cant.</th>
+                    <th style="padding: 10px; text-align: right;">Precio U.</th>
+                    <th style="padding: 10px; text-align: right; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">Total</th>
                 </tr>
             </thead>
-            <tbody id="pdfTableBody"></tbody>
+            <tbody id="pdfTableBody" style="font-size: 13px;"></tbody>
         </table>
 
-        <div style="display: flex; justify-content: flex-end;">
-            <div style="width: 40%; background-color: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #edf2f4; text-align: right;">
-                <span style="font-size: 14px; font-weight: 800; color: #1e1e2f;">TOTAL: <span id="pdfTotalSale">$0.00</span></span>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+            <div style="width: 40%; background: #1e1e2f; color: white; padding: 14px; border-radius: 8px; text-align: right; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                <span style="font-size: 11px; opacity: 0.8; block; text-transform: uppercase; font-weight: bold;">Monto Neto Total:</span>
+                <p style="font-size: 22px; font-weight: 900; margin: 4px 0 0 0; color: #00b4d8;" id="pdfTotalSale">$0.00</p>
             </div>
         </div>
 
-        <div style="margin-top: 50px; text-align: center; font-size: 10px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 10px;">
-            Propuesta económica de carácter confidencial. Válida por 15 días hábiles.
+        <div style="margin-top: 70px; text-align: center; font-size: 11px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 15px; font-style: italic;">
+            Gracias por su confianza. Los precios no incluyen IVA. Todo proyecto requiere el 50% de anticipo para comenzar producción.
         </div>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT INTEGRADA -->
     <script>
         let currentItems = [];
         let historyData = [];
@@ -447,11 +425,11 @@
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
             
-            if(localStorage.getItem('tyj_history_v2')) {
-                historyData = JSON.parse(localStorage.getItem('tyj_history_v2'));
+            if(localStorage.getItem('tyj_pro_history')) {
+                historyData = JSON.parse(localStorage.getItem('tyj_pro_history'));
             }
-            if(localStorage.getItem('tyj_clients')) {
-                clientsList = JSON.parse(localStorage.getItem('tyj_clients'));
+            if(localStorage.getItem('tyj_pro_clients')) {
+                clientsList = JSON.parse(localStorage.getItem('tyj_pro_clients'));
             }
             renderHistory();
             renderClients();
@@ -478,7 +456,7 @@
             const margin = parseFloat(document.getElementById('globalMargin').value) || 0;
 
             if(!name || cost <= 0) {
-                alert('Ingresa la descripción y el costo base.');
+                alert('Por favor, introduce la descripción y un costo base correcto.');
                 return;
             }
 
@@ -522,11 +500,11 @@
                 const div = document.createElement('div');
                 div.className = 'added-item';
                 div.innerHTML = `
-                    <div style="max-width: 70%;">
-                        <strong style="font-size:14px;">${item.name}</strong><br>
-                        <span style="font-size:12px; color: var(--muted);">${item.qty} ${item.unit} x $${item.salePriceUnit.toFixed(2)} (+${item.margin}%)</span>
+                    <div style="max-width: 75%;">
+                        <strong style="font-size:14px; color: var(--primary);">${item.name}</strong><br>
+                        <span style="font-size:12px; color: var(--muted);">${item.qty} ${item.unit} &bull; P. Venta U: $${item.salePriceUnit.toFixed(2)}</span>
                     </div>
-                    <div style="text-align: right; display:flex; align-items:center; gap: 10px;">
+                    <div style="text-align: right; display:flex; align-items:center; gap: 8px;">
                         <strong style="color:var(--primary); font-size:14px;">$${item.totalSaleItem.toFixed(2)}</strong>
                         <button class="btn btn-danger" onclick="removeProductItem(${item.id})">❌</button>
                     </div>
@@ -548,7 +526,7 @@
             if(!nombre) return;
             if(!clientsList.includes(nombre)) {
                 clientsList.push(nombre);
-                localStorage.setItem('tyj_clients', JSON.stringify(clientsList));
+                localStorage.setItem('tyj_pro_clients', JSON.stringify(clientsList));
                 renderClients();
             }
         }
@@ -558,57 +536,103 @@
             const locationStr = document.getElementById('location').value.trim() || 'No especificada';
             const dateStr = document.getElementById('quoteDate').value;
             const status = document.getElementById('quoteStatus').value;
+            const editingFolio = document.getElementById('editingFolio').value;
 
             if(currentItems.length === 0) {
-                alert('Agrega mínimo un concepto antes de guardar.');
+                alert('Inserta al menos un concepto en la tabla.');
                 return;
             }
 
             const totalSale = currentItems.reduce((acc, i) => acc + i.totalSaleItem, 0);
-            const folio = 'TYJ-' + Math.floor(1000 + Math.random() * 9000);
+            let folio = editingFolio;
 
-            // Guardar en Historial
-            historyData.unshift({ folio, client, location: locationStr, date: dateStr, status, total: totalSale });
-            localStorage.setItem('tyj_history_v2', JSON.stringify(historyData));
+            if (editingFolio) {
+                // Modo Edición: Actualizar elemento existente
+                const index = historyData.findIndex(q => q.folio === editingFolio);
+                if (index !== -1) {
+                    historyData[index] = {
+                        folio, client, location: locationStr, date: dateStr, status, total: totalSale, items: [...currentItems]
+                    };
+                }
+            } else {
+                // Crear Nueva Cotización
+                folio = 'TYJ-' + Math.floor(1000 + Math.random() * 9000);
+                historyData.unshift({
+                    folio, client, location: locationStr, date: dateStr, status, total: totalSale, items: [...currentItems]
+                });
+            }
+
+            localStorage.setItem('tyj_pro_history', JSON.stringify(historyData));
             renderHistory();
+            
+            // Descargar el PDF inmediatamente de los datos guardados
+            exportarVisualizacionPDF(folio);
+            limpiarFormulario();
+        }
 
-            // Preparar PDF
-            document.getElementById('pdfFolio').innerText = `FOLIO: ${folio}`;
-            document.getElementById('pdfClient').innerText = client;
-            document.getElementById('pdfLocation').innerText = `Dirección: ${locationStr}`;
-            document.getElementById('pdfDate').innerText = dateStr;
-            document.getElementById('pdfStatus').innerText = status.toUpperCase();
+        function exportarVisualizacionPDF(folioTarget) {
+            const quote = historyData.find(q => q.folio === folioTarget);
+            if(!quote) return;
+
+            document.getElementById('pdfFolio').innerText = `FOLIO: ${quote.folio}`;
+            document.getElementById('pdfClient').innerText = quote.client;
+            document.getElementById('pdfLocation').innerText = `Ubicación: ${quote.location}`;
+            document.getElementById('pdfDate').innerText = `Fecha: ${quote.date}`;
+            
+            const statusNode = document.getElementById('pdfStatus');
+            statusNode.innerText = quote.status;
+            if(quote.status === 'Vendido') { statusNode.style.color = '#155724'; }
+            else if(quote.status === 'Pendiente') { statusNode.style.color = '#856404'; }
+            else { statusNode.style.color = '#721c24'; }
 
             const pdfTbody = document.getElementById('pdfTableBody');
             pdfTbody.innerHTML = '';
-            currentItems.forEach(item => {
+            
+            quote.items.forEach((item, index) => {
                 const tr = document.createElement('tr');
+                tr.style.backgroundColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
                 tr.innerHTML = `
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>${item.name}</strong></td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.unit}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.qty}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">$${item.salePriceUnit.toFixed(2)}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right; font-weight: bold;">$${item.totalSaleItem.toFixed(2)}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4;"><strong>${item.name}</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: center; color: #555;">${item.unit}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: center;">${item.qty}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: right;">$${item.salePriceUnit.toFixed(2)}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: right; font-weight: bold; color: #1e1e2f;">$${item.totalSaleItem.toFixed(2)}</td>
                 `;
                 pdfTbody.appendChild(tr);
             });
-            document.getElementById('pdfTotalSale').innerText = `$${totalSale.toFixed(2)}`;
+            
+            document.getElementById('pdfTotalSale').innerText = `$${quote.total.toFixed(2)}`;
 
-            // Lanzar descarga optimizada móvil
             const element = document.getElementById('pdf-template');
             element.style.display = 'block';
             
             const opt = {
-                margin: 10,
-                filename: `Cotizacion_${client.replace(/\s+/g, '_')}.pdf`,
+                margin: 12,
+                filename: `Cotizacion_${quote.client.replace(/\s+/g, '_')}_${quote.folio}.pdf`,
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
                 element.style.display = 'none';
-                alert('¡Cotización guardada e historial actualizado con éxito!');
             });
+        }
+
+        function cargarParaEditar(folioTarget) {
+            const quote = historyData.find(q => q.folio === folioTarget);
+            if(!quote) return;
+
+            document.getElementById('editingFolio').value = quote.folio;
+            document.getElementById('clientName').value = quote.client;
+            document.getElementById('location').value = quote.location;
+            document.getElementById('quoteDate').value = quote.date;
+            document.getElementById('quoteStatus').value = quote.status;
+            
+            currentItems = [...quote.items];
+            renderCurrentItems();
+
+            document.getElementById('editBadge').style.display = 'block';
+            switchPage('quote', document.querySelectorAll('.nav-item')[0]);
         }
 
         function renderHistory() {
@@ -623,11 +647,11 @@
             }
 
             if(filtered.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--muted);">No se encontraron cotizaciones.</p>';
+                container.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--muted);">No hay cotizaciones registradas.</p>';
                 return;
             }
 
-            filtered.forEach((q, index) => {
+            filtered.forEach(q => {
                 let statusClass = 'status-pending';
                 if(q.status === 'Vendido') statusClass = 'status-won';
                 if(q.status === 'Rechazado') statusClass = 'status-lost';
@@ -635,32 +659,25 @@
                 const div = document.createElement('div');
                 div.className = 'history-card';
                 div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                         <div>
-                            <strong style="font-size:16px;">${q.client}</strong>
-                            <div style="font-size:11px; color:var(--muted);">${q.folio} &bull; 📅 ${q.date}</div>
+                            <strong style="font-size:16px; color: var(--primary);">${q.client}</strong>
+                            <div style="font-size:11px; color:var(--muted); margin-top:2px;">${q.folio} &bull; 📅 ${q.date}</div>
                         </div>
                         <span class="status-badge ${statusClass}">${q.status}</span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:8px; border-top:1px dashed var(--border);">
-                        <span style="font-size:15px; font-weight:800; color:var(--primary);">Total: $${q.total.toFixed(2)}</span>
-                        <select style="width: auto; padding: 5px 10px; font-size:12px;" onchange="cambiarEstadoHistorial(${index}, this.value)">
-                            <option value="">Cambiar Estado...</option>
-                            <option value="Pendiente">🟡 Pendiente</option>
-                            <option value="Vendido">🟢 Comprada</option>
-                            <option value="Rechazado">🔴 Rechazada</option>
-                        </select>
+                    
+                    <div style="margin-top: 10px; font-size:14px; font-weight:700; color:var(--primary);">
+                        Importe: $${q.total.toFixed(2)}
+                    </div>
+
+                    <div class="history-actions">
+                        <button class="btn btn-accent btn-small" onclick="exportarVisualizacionPDF('${q.folio}')">👁️ Ver / Bajar PDF</button>
+                        <button class="btn btn-outline btn-small" onclick="cargarParaEditar('${q.folio}')">✏️ Editar Orden</button>
                     </div>
                 `;
                 container.appendChild(div);
             });
-        }
-
-        function cambiarEstadoHistorial(idx, nuevoEstado) {
-            if(!nuevoEstado) return;
-            historyData[idx].status = nuevoEstado;
-            localStorage.setItem('tyj_history_v2', JSON.stringify(historyData));
-            renderHistory();
         }
 
         function limpiarFiltroFecha() {
@@ -673,7 +690,7 @@
             container.innerHTML = '';
 
             if(clientsList.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 10px; color: var(--muted);">No tienes clientes guardados aún.</p>';
+                container.innerHTML = '<p style="text-align: center; padding: 10px; color: var(--muted);">No hay clientes guardados.</p>';
                 return;
             }
 
@@ -686,13 +703,14 @@
                 div.style.alignItems = 'center';
                 div.innerHTML = `
                     <span>👤 <strong>${c}</strong></span>
-                    <button class="btn btn-primary" style="width:auto; padding:6px 12px; font-size:11px;" onclick="cargarClienteDirecto('${c}')">Nueva Cotización</button>
+                    <button class="btn btn-primary btn-small" onclick="cargarClienteDirecto('${c}')">Nueva Cotización</button>
                 `;
                 container.appendChild(div);
             });
         }
 
         function cargarClienteDirecto(nombre) {
+            limpiarFormulario();
             document.getElementById('clientName').value = nombre;
             switchPage('quote', document.querySelectorAll('.nav-item')[0]);
         }
@@ -700,9 +718,11 @@
         function limpiarFormulario() {
             currentItems = [];
             renderCurrentItems();
+            document.getElementById('editingFolio').value = '';
             document.getElementById('clientName').value = '';
             document.getElementById('location').value = '';
             document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('editBadge').style.display = 'none';
         }
     </script>
 </body>
