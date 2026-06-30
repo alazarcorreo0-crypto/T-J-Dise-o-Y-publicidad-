@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>T&J DISEÑO Y PUBLICIDAD - App Pro</title>
+    <title>T&J DISEÑO Y PUBLICIDAD - App Corporativa</title>
     <style>
         :root {
-            --primary: #1e1e2f;
+            --primary: #11111c;
             --accent: #00b4d8; /* Cian */
-            --magenta: #e60067; /* Magenta del logo */
-            --yellow: #ffd166; /* Amarillo del logo */
-            --accent-light: #e0f7fa;
-            --bg: #f4f6f9;
+            --magenta: #e60067; /* Magenta */
+            --yellow: #ffd166; /* Amarillo */
+            --bg: #f5f7fa;
             --card: #ffffff;
             --text: #2b2d42;
             --muted: #8d99ae;
@@ -57,7 +56,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Colores basados en el logotipo CMYK */
         .cmyk-t { color: var(--accent); }
         .cmyk-amp { color: #f4c430; }
         .cmyk-j { color: var(--magenta); }
@@ -66,13 +64,13 @@
         .app-page {
             display: none;
             padding: 16px;
-            animation: fadeIn 0.2s ease-out;
+            animation: fadeIn 0.15s ease-out;
         }
 
         .app-page.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -221,7 +219,7 @@
         input[type=range] { -webkit-appearance: none; width: 100%; background: #e0e0e0; height: 6px; border-radius: 3px; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-        /* Contenedor fuera de pantalla forzado para PDF */
+        /* Contenedor oculto optimizado para captura estricta */
         #pdf-wrapper {
             position: absolute;
             left: -9999px;
@@ -230,10 +228,11 @@
         }
 
         #pdf-template {
-            width: 790px;
+            width: 800px;
             background: #ffffff;
-            padding: 50px 45px 45px 45px; /* Aumentamos margen superior para evitar recortes */
+            padding: 60px 50px;
             box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
         
         .badge-edition {
@@ -258,7 +257,6 @@
         </h1>
     </div>
 
-    <!-- PESTAÑA 1: COTIZAR -->
     <div id="page-quote" class="app-page active">
         <div id="editBadge" class="badge-edition">✏️ Modo Edición Activo (Modificando Cotización)</div>
         <button class="btn btn-secondary" onclick="limpiarFormulario()">🔄 Nueva / Cancelar Edición</button>
@@ -271,7 +269,7 @@
                 <input type="text" id="clientName" placeholder="Nombre del cliente" onchange="agregarClienteAAgenda(this.value)">
             </div>
             <div class="form-group">
-                <label>Ubicación</label>
+                <label>Ubicación / Dirección</label>
                 <input type="text" id="location" placeholder="Ciudad o Dirección">
             </div>
             <div class="grid-2">
@@ -291,7 +289,7 @@
         </div>
 
         <div class="card">
-            <div class="card-title">Añadir Concepto</div>
+            <div class="card-title">Añadir Concepto de Venta</div>
             <div class="form-group">
                 <label>Descripción del Producto o Servicio</label>
                 <input type="text" id="prodName" placeholder="Ej. 3m Lona cuadrada, Tarjetas de presentación">
@@ -340,7 +338,6 @@
         </div>
     </div>
 
-    <!-- PESTAÑA 2: HISTORIAL -->
     <div id="page-history" class="app-page">
         <div class="card">
             <div class="card-title">Filtrar Cotizaciones</div>
@@ -353,7 +350,6 @@
         <div id="historyListContainer"></div>
     </div>
 
-    <!-- PESTAÑA 3: CLIENTES -->
     <div id="page-clients" class="app-page">
         <div class="card">
             <div class="card-title">Directorio de Clientes</div>
@@ -361,7 +357,6 @@
         </div>
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR -->
     <div class="nav-bar">
         <div class="nav-item active" onclick="switchPage('quote', this)">
             <div class="nav-icon">📝</div>
@@ -378,58 +373,75 @@
     </div>
 
 
-    <!-- ================= PLANTILLA DE IMPRESIÓN CORREGIDA PARA EL PDF ================= -->
     <div id="pdf-wrapper">
         <div id="pdf-template">
-            <!-- Encabezado con Colores del Isotipo CMYK y margen preventivo -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 25px; margin-top: 10px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
                 <div>
-                    <h1 style="color: #1e1e2f; font-size: 32px; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">
+                    <h1 style="font-size: 34px; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -1px; line-height: 1.1;">
                         <span style="color: #00b4d8;">T</span><span style="color: #f4c430;">&</span><span style="color: #e60067;">J</span> 
-                        <span style="color: #1e1e2f; font-size: 26px; font-weight: 800;">DISEÑO Y PUBLICIDAD</span>
+                        <span style="color: #11111c; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">DISEÑO Y PUBLICIDAD</span>
                     </h1>
-                    <p style="font-size: 11px; color: #00b4d8; font-weight: bold; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Soluciones Creativas e Impresión Profesional</p>
+                    <p style="font-size: 11px; color: #8d99ae; font-weight: bold; text-transform: uppercase; margin: 0; letter-spacing: 1.5px;">Impresión Profesional & Soluciones Creativas</p>
                 </div>
-                <div style="text-align: right;">
-                    <div style="background-color: #1e1e2f; color: white; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block;" id="pdfFolio">#0000</div>
-                    <p style="font-size: 12px; color: #666; margin: 6px 0 0 0;" id="pdfDate">-</p>
+                
+                <div style="text-align: right; min-width: 200px;">
+                    <p style="font-size: 11px; font-weight: 800; color: #8d99ae; text-transform: uppercase; margin: 0; letter-spacing: 1px;">COTIZACIÓN COMERCIAL</p>
+                    <p style="font-size: 22px; font-weight: 900; color: #e60067; margin: 2px 0 4px 0;" id="pdfFolio">#0000</p>
+                    <div style="font-size: 12px; color: #2b2d42; background: #f4f6f9; padding: 4px 10px; border-radius: 4px; display: inline-block; font-weight: 600;" id="pdfDate">Fecha: -</div>
                 </div>
             </div>
 
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 15px; border: 1px solid #edf2f4;">
+            <div style="background-color: #11111c; color: #ffffff; padding: 18px 24px; border-radius: 8px; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <span style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 10px;">PRESUPUESTO PARA:</span>
-                    <p style="font-size: 16px; font-weight: bold; color: #1e1e2f; margin: 4px 0;" id="pdfClient">-</p>
-                    <p style="font-size: 12px; color: #4a5759; margin: 0;" id="pdfLocation">-</p>
+                    <span style="color: #00b4d8; font-weight: 800; text-transform: uppercase; font-size: 9px; letter-spacing: 1px; display: block; margin-bottom: 2px;">PREPARADO PARA:</span>
+                    <p style="font-size: 18px; font-weight: 700; margin: 0; color: #ffffff;" id="pdfClient">-</p>
+                    <p style="font-size: 12px; color: #a2a2b5; margin-top: 3px;" id="pdfLocation">-</p>
                 </div>
-                <div style="text-align: right; border-left: 2px solid #edf2f4; padding-left: 15px;">
-                    <span style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 10px;">ESTADO ACTUAL:</span>
-                    <p style="font-size: 13px; font-weight: bold; margin: 6px 0 0 0; text-transform: uppercase;" id="pdfStatus">-</p>
+                <div style="text-align: right; border-left: 1px solid #33334d; padding-left: 24px;">
+                    <span style="color: #8d99ae; font-weight: 800; text-transform: uppercase; font-size: 9px; letter-spacing: 1px; display: block; margin-bottom: 2px;">ESTADO DE PROPUESTA:</span>
+                    <p style="font-size: 13px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;" id="pdfStatus">-</p>
                 </div>
             </div>
 
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
                 <thead>
-                    <tr style="background-color: #1e1e2f; color: white; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
-                        <th style="padding: 12px; text-align: left; border-top-left-radius: 6px; border-bottom-left-radius: 6px;">Descripción del Concepto</th>
-                        <th style="padding: 12px; text-align: center;">Unidad</th>
-                        <th style="padding: 12px; text-align: center;">Cant.</th>
-                        <th style="padding: 12px; text-align: right;">Precio U.</th>
-                        <th style="padding: 12px; text-align: right; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">Total</th>
+                    <tr style="background-color: #f4f6f9; color: #11111c; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #11111c;">
+                        <th style="padding: 14px 12px; text-align: left; font-weight: 800;">Descripción del Concepto publicitario</th>
+                        <th style="padding: 14px 12px; text-align: center; font-weight: 800; width: 90px;">Unidad</th>
+                        <th style="padding: 14px 12px; text-align: center; font-weight: 800; width: 80px;">Cant.</th>
+                        <th style="padding: 14px 12px; text-align: right; font-weight: 800; width: 120px;">Precio Unit.</th>
+                        <th style="padding: 14px 12px; text-align: right; font-weight: 800; width: 130px;">Subtotal</th>
                     </tr>
                 </thead>
-                <tbody id="pdfTableBody" style="font-size: 13px; color: #222;"></tbody>
+                <tbody id="pdfTableBody" style="font-size: 13px; color: #2b2d42;">
+                    </tbody>
             </table>
 
-            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                <div style="width: 40%; background: #1e1e2f; color: white; padding: 14px; border-radius: 8px; text-align: right;">
-                    <span style="font-size: 11px; opacity: 0.8; text-transform: uppercase; font-weight: bold;">Monto Neto Total:</span>
-                    <p style="font-size: 22px; font-weight: 900; margin: 4px 0 0 0; color: #00b4d8;" id="pdfTotalSale">$0.00</p>
+            <div style="display: flex; justify-content: flex-end; margin-top: 25px;">
+                <div style="width: 320px; background: #f4f6f9; padding: 20px; border-radius: 8px; border: 1px solid #edf2f4;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">
+                        <span>Subtotal Neto:</span>
+                        <span id="pdfSubtotalLabel">$0.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #6c757d; margin-bottom: 12px; font-weight: 600;">
+                        <span>I.V.A. (16%):</span>
+                        <span>Informativo / No inc.</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 900; color: #11111c; border-top: 2px dashed #cbd5e1; padding-top: 12px;">
+                        <span>TOTAL NETO:</span>
+                        <span style="color: #00b4d8; font-size: 19px;" id="pdfTotalSale">$0.00</span>
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-top: 70px; text-align: center; font-size: 11px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 10px;">
-                Gracias por su confianza. Los precios no incluyen IVA. Todo proyecto requiere el 50% de anticipo para comenzar producción.
+            <div style="margin-top: 60px; background: #fafafa; border-radius: 6px; padding: 15px; border: 1px solid #f1f5f9;">
+                <p style="font-size: 10px; font-weight: 800; color: #11111c; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Condiciones Comerciales Importantes:</p>
+                <ul style="font-size: 10px; color: #8d99ae; padding-left: 14px; line-height: 1.5;">
+                    <li>Los precios mostrados están calculados en moneda nacional y no incluyen impuestos aplicables.</li>
+                    <li>Toda orden requiere del 50% de anticipo para iniciar fases de diseño y preparación de archivos de impresión.</li>
+                    <li>La vigencia estricta de este presupuesto es de 15 días naturales debido a la fluctuación en costos de insumos.</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -588,43 +600,43 @@
             const quote = historyData.find(q => q.folio === folioTarget);
             if(!quote) return;
 
-            document.getElementById('pdfFolio').innerText = `FOLIO: ${quote.folio}`;
+            document.getElementById('pdfFolio').innerText = `${quote.folio}`;
             document.getElementById('pdfClient').innerText = quote.client;
-            document.getElementById('pdfLocation').innerText = `Ubicación: ${quote.location}`;
-            document.getElementById('pdfDate').innerText = `Fecha: ${quote.date}`;
+            document.getElementById('pdfLocation').innerText = `Dirección de Entrega: ${quote.location}`;
+            document.getElementById('pdfDate').innerText = `Fecha de Emisión: ${quote.date}`;
             
             const statusNode = document.getElementById('pdfStatus');
-            statusNode.innerText = quote.status;
-            if(quote.status === 'Vendido') { statusNode.style.color = '#155724'; }
-            else if(quote.status === 'Pendiente') { statusNode.style.color = '#856404'; }
-            else { statusNode.style.color = '#721c24'; }
+            statusNode.innerText = quote.status === 'Vendido' ? 'Aprobada / Producción' : quote.status === 'Pendiente' ? 'Pendiente / Revisión' : 'Rechazada';
+            if(quote.status === 'Vendido') { statusNode.style.color = '#4ade80'; }
+            else if(quote.status === 'Pendiente') { statusNode.style.color = '#fbbf24'; }
+            else { statusNode.style.color = '#f87171'; }
 
             const pdfTbody = document.getElementById('pdfTableBody');
             pdfTbody.innerHTML = '';
             
             quote.items.forEach((item, index) => {
                 const tr = document.createElement('tr');
-                tr.style.backgroundColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
+                tr.style.borderBottom = '1px solid #f1f5f9';
+                tr.style.backgroundColor = index % 2 === 0 ? '#ffffff' : '#fafafa';
                 tr.innerHTML = `
-                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: left;"><strong>${item.name}</strong></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: center; color: #555;">${item.unit}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: center;">${item.qty}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: right;">$${item.salePriceUnit.toFixed(2)}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #edf2f4; text-align: right; font-weight: bold; color: #1e1e2f;">$${item.totalSaleItem.toFixed(2)}</td>
+                    <td style="padding: 14px 12px; text-align: left; font-size:13px; line-height:1.4;"><strong>${item.name}</strong></td>
+                    <td style="padding: 14px 12px; text-align: center; color: #64748b;">${item.unit}</td>
+                    <td style="padding: 14px 12px; text-align: center; font-weight: 600;">${item.qty}</td>
+                    <td style="padding: 14px 12px; text-align: right; color: #475569;">$${item.salePriceUnit.toFixed(2)}</td>
+                    <td style="padding: 14px 12px; text-align: right; font-weight: bold; color: #11111c;">$${item.totalSaleItem.toFixed(2)}</td>
                 `;
                 pdfTbody.appendChild(tr);
             });
             
+            document.getElementById('pdfSubtotalLabel').innerText = `$${quote.total.toFixed(2)}`;
             document.getElementById('pdfTotalSale').innerText = `$${quote.total.toFixed(2)}`;
 
             const element = document.getElementById('pdf-template');
-            
-            // Nombre del PDF formateado correctamente: Cotizacion_[Cliente]_[Folio].pdf
             const cleanClientName = quote.client.replace(/[^a-zA-Z0-9]/g, '_');
             const calculatedFilename = `Cotizacion_${cleanClientName}_${quote.folio}.pdf`;
 
             const opt = {
-                margin: 10,
+                margin: 0,
                 filename: calculatedFilename,
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0 },
                 jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
