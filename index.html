@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>T&J DISEÑO Y PUBLICIDAD - App</title>
+    <style>
+        :root {
+            --primary: #1e1e2f;
+            --accent: #00b4d8;
+            --accent-light: #e0f7fa;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #2b2d42;
+            --muted: #8d99ae;
+            --border: #edf2f4;
+            
+            /* Colores de Estados */
+            --status-won-bg: #d4edda;
+            --status-won-text: #155724;
+            --status-pending-bg: #fff3cd;
+            --status-pending-text: #856404;
+            --status-lost-bg: #f8d7da;
+            --status-lost-text: #721c24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 80px; /* Espacio para la barra inferior */
+            font-size: 15px;
+        }
+
+        /* Encabezado fijo superior */
+        .app-header {
+            background-color: var(--card);
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-header h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .app-header h1 span {
+            color: var(--accent);
+        }
+
+        /* Contenedor de las páginas */
+        .app-page {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .app-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos de Tarjetas (Cards) optimizadas para touch */
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Formulario Móvil */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background-color: #fafafa;
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+        }
+
+        /* Botones optimizados para dedos grandes */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-accent { background-color: var(--accent); color: white; }
+        .btn-danger { background-color: #f8d7da; color: #721c24; padding: 8px; font-size: 12px; }
+        .btn-secondary { background-color: #e2eafc; color: #4a5759; margin-bottom: 12px;}
+
+        /* Lista de productos agregados en tarjeta compacta */
+        .added-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .added-item:last-child { border-bottom: none; }
+
+        /* Barra de navegación inferior móvil */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background-color: var(--card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            width: 33.3%;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Bloques de Estado e Historial */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .status-won { background-color: var(--status-won-bg); color: var(--status-won-text); }
+        .status-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+        .status-lost { background-color: var(--status-lost-bg); color: var(--status-lost-text); }
+
+        .history-card {
+            background: var(--card);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+        }
+
+        /* Caja de totales */
+        .total-box {
+            background-color: #fafafa;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        /* Slider de Margen estilizado */
+        .slider-container {
+            margin: 10px 0;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: #e0e0e0;
+            height: 6px;
+            border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Ocultar plantilla PDF */
+        #pdf-template { display: none; }
+    </style>
+    <!-- Librería PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- Encabezado Fijo -->
+    <div class="app-header">
+        <h1>T&J <span>DISEÑO Y PUBLICIDAD</span></h1>
+    </div>
+
+    <!-- PESTAÑA 1: CREAR COTIZACIÓN -->
+    <div id="page-quote" class="app-page active">
+        <button class="btn btn-secondary" onclick="limpiarFormulario()">🔄 Nueva / Limpiar Cotización</button>
+        
+        <div class="card">
+            <div class="card-title">Cliente y Control</div>
+            <div class="form-group">
+                <label>Cliente / Empresa</label>
+                <input type="text" id="clientName" placeholder="Nombre del cliente" onchange="agregarClienteAAgenda(this.value)">
+            </div>
+            <div class="form-group">
+                <label>Ubicación</label>
+                <input type="text" id="location" placeholder="Ciudad o Dirección">
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" id="quoteDate">
+                </div>
+                <div class="form-group">
+                    <label>Estado Inicial</label>
+                    <select id="quoteStatus">
+                        <option value="Pendiente">🟡 Pensante / Pendiente</option>
+                        <option value="Vendido">🟢 Comprada / Cerrada</option>
+                        <option value="Rechazado">🔴 No Comprada</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Añadir Concepto</div>
+            <div class="form-group">
+                <label>Descripción del Producto o Servicio</label>
+                <input type="text" id="prodName" placeholder="Ej. Lona publicitaria, Logotipo">
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Unidad</label>
+                    <input type="text" id="prodUnit" placeholder="m², millar, pza">
+                </div>
+                <div class="form-group">
+                    <label>Cantidad</label>
+                    <input type="number" id="prodQty" value="1" min="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Precio Costo Base ($)</label>
+                <input type="number" id="prodCost" placeholder="0.00">
+            </div>
+            <div class="form-group slider-container">
+                <label id="marginLabel">Porcentaje a Sumar: 30%</label>
+                <input type="range" id="globalMargin" min="0" max="200" value="30" oninput="updateMarginLabel(this.value)">
+            </div>
+            <button class="btn btn-primary" onclick="addProductItem()">+ Agregar a la Lista</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Resumen Actual</div>
+            <div id="addedItemsContainer">
+                <p style="text-align: center; color: var(--muted); padding: 10px; font-size: 13px;">No hay conceptos agregados aún.</p>
+            </div>
+            <div class="total-box">
+                <div class="total-row" style="opacity: 0.7;">
+                    <span>Costo total inversión:</span>
+                    <span id="sumTotalCost">$0.00</span>
+                </div>
+                <div class="total-row" style="color: var(--accent); font-weight: bold;">
+                    <span>Ganancia estimada:</span>
+                    <span id="sumProfit">$0.00</span>
+                </div>
+                <div class="total-row" style="font-size: 16px; font-weight: 800; border-top: 1px dashed #ccc; padding-top: 8px; margin-top: 6px;">
+                    <span>TOTAL VENTA:</span>
+                    <span id="sumTotalSale">$0.00</span>
+                </div>
+            </div>
+            <button class="btn btn-accent" style="margin-top: 15px;" onclick="saveAndGeneratePDF()">💾 Guardar y Generar PDF</button>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 2: HISTORIAL DE COTIZACIONES -->
+    <div id="page-history" class="app-page">
+        <div class="card">
+            <div class="card-title">Filtrar Cotizaciones</div>
+            <div class="form-group">
+                <label>Buscar por Fecha</label>
+                <input type="date" id="filterDate" onchange="renderHistory()">
+            </div>
+            <button class="btn btn-primary" style="padding: 8px; font-size: 12px;" onclick="limpiarFiltroFecha()">Mostrar Todas</button>
+        </div>
+        <div id="historyListContainer">
+            <!-- Cargado dinámicamente -->
+        </div>
+    </div>
+
+    <!-- PESTAÑA 3: AGENDA DE CLIENTES -->
+    <div id="page-clients" class="app-page">
+        <div class="card">
+            <div class="card-title">Mis Clientes Frecuentes</div>
+            <div id="clientsListContainer">
+                <!-- Cargado dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL) -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchPage('quote', this)">
+            <div class="nav-icon">📝</div>
+            <span>Cotizar</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('history', this)">
+            <div class="nav-icon">🗂️</div>
+            <span>Historial</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('clients', this)">
+            <div class="nav-icon">👤</div>
+            <span>Clientes</span>
+        </div>
+    </div>
+
+
+    <!-- ================= PLANTILLA IMPRESIÓN / PDF EN LIMPIO ================= -->
+    <div id="pdf-template">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 20px;">
+            <div>
+                <h1 style="color: #1e1e2f; font-size: 24px; font-weight: bold; margin-bottom: 3px;">T&J DISEÑO Y PUBLICIDAD</h1>
+                <p style="font-size: 11px; color: #555;">Soluciones Creativas e Impresión Profesional</p>
+                <p style="font-size: 11px; color: #00b4d8; font-weight: bold; margin-top: 5px;" id="pdfFolio">FOLIO: #0000</p>
+            </div>
+            <div style="text-align: right;">
+                <h2 style="font-size: 13px; color: #666; text-transform: uppercase;">Presupuesto</h2>
+                <p style="font-size: 12px;" id="pdfDate">-</p>
+            </div>
+        </div>
+
+        <div style="background-color: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border: 1px solid #edf2f4; font-size: 12px;">
+            <div>
+                <p style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 9px; margin-bottom: 2px;">Cliente:</p>
+                <p style="font-size: 14px; font-weight: bold;" id="pdfClient">-</p>
+                <p id="pdfLocation">-</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="color: #8d99ae; font-weight: bold; text-transform: uppercase; font-size: 9px; margin-bottom: 2px;">Estado:</p>
+                <p style="font-weight: bold;" id="pdfStatus">-</p>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 12px;">
+            <thead>
+                <tr style="background-color: #1e1e2f; color: white;">
+                    <th style="padding: 8px; text-align: left;">Descripción</th>
+                    <th style="padding: 8px; text-align: center;">Unidad</th>
+                    <th style="padding: 8px; text-align: center;">Cant.</th>
+                    <th style="padding: 8px; text-align: right;">P. Unitario</th>
+                    <th style="padding: 8px; text-align: right;">Importe</th>
+                </tr>
+            </thead>
+            <tbody id="pdfTableBody"></tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end;">
+            <div style="width: 40%; background-color: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #edf2f4; text-align: right;">
+                <span style="font-size: 14px; font-weight: 800; color: #1e1e2f;">TOTAL: <span id="pdfTotalSale">$0.00</span></span>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px; text-align: center; font-size: 10px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 10px;">
+            Propuesta económica de carácter confidencial. Válida por 15 días hábiles.
+        </div>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT INTEGRADA -->
+    <script>
+        let currentItems = [];
+        let historyData = [];
+        let clientsList = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
+            
+            if(localStorage.getItem('tyj_history_v2')) {
+                historyData = JSON.parse(localStorage.getItem('tyj_history_v2'));
+            }
+            if(localStorage.getItem('tyj_clients')) {
+                clientsList = JSON.parse(localStorage.getItem('tyj_clients'));
+            }
+            renderHistory();
+            renderClients();
+        });
+
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            element.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function updateMarginLabel(value) {
+            document.getElementById('marginLabel').innerText = `Porcentaje a Sumar: ${value}%`;
+        }
+
+        function addProductItem() {
+            const name = document.getElementById('prodName').value.trim();
+            const unit = document.getElementById('prodUnit').value.trim() || 'pza';
+            const qty = parseFloat(document.getElementById('prodQty').value) || 1;
+            const cost = parseFloat(document.getElementById('prodCost').value) || 0;
+            const margin = parseFloat(document.getElementById('globalMargin').value) || 0;
+
+            if(!name || cost <= 0) {
+                alert('Ingresa la descripción y el costo base.');
+                return;
+            }
+
+            const salePriceUnit = cost * (1 + (margin / 100));
+            const totalSaleItem = salePriceUnit * qty;
+            const totalCostItem = cost * qty;
+
+            currentItems.push({
+                id: Date.now(), name, unit, qty, cost, margin, salePriceUnit, totalSaleItem, totalCostItem
+            });
+
+            renderCurrentItems();
+            
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodUnit').value = '';
+            document.getElementById('prodQty').value = '1';
+            document.getElementById('prodCost').value = '';
+        }
+
+        function removeProductItem(id) {
+            currentItems = currentItems.filter(item => item.id !== id);
+            renderCurrentItems();
+        }
+
+        function renderCurrentItems() {
+            const container = document.getElementById('addedItemsContainer');
+            container.innerHTML = '';
+
+            if(currentItems.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--muted); padding: 10px; font-size: 13px;">No hay conceptos agregados aún.</p>';
+                actualizarTotales(0, 0);
+                return;
+            }
+
+            let totalCost = 0, totalSale = 0;
+
+            currentItems.forEach(item => {
+                totalCost += item.totalCostItem;
+                totalSale += item.totalSaleItem;
+
+                const div = document.createElement('div');
+                div.className = 'added-item';
+                div.innerHTML = `
+                    <div style="max-width: 70%;">
+                        <strong style="font-size:14px;">${item.name}</strong><br>
+                        <span style="font-size:12px; color: var(--muted);">${item.qty} ${item.unit} x $${item.salePriceUnit.toFixed(2)} (+${item.margin}%)</span>
+                    </div>
+                    <div style="text-align: right; display:flex; align-items:center; gap: 10px;">
+                        <strong style="color:var(--primary); font-size:14px;">$${item.totalSaleItem.toFixed(2)}</strong>
+                        <button class="btn btn-danger" onclick="removeProductItem(${item.id})">❌</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            actualizarTotales(totalCost, totalSale);
+        }
+
+        function actualizarTotales(cost, sale) {
+            const profit = sale - cost;
+            document.getElementById('sumTotalCost').innerText = `$${cost.toFixed(2)}`;
+            document.getElementById('sumProfit').innerText = `$${profit.toFixed(2)}`;
+            document.getElementById('sumTotalSale').innerText = `$${sale.toFixed(2)}`;
+        }
+
+        function agregarClienteAAgenda(nombre) {
+            if(!nombre) return;
+            if(!clientsList.includes(nombre)) {
+                clientsList.push(nombre);
+                localStorage.setItem('tyj_clients', JSON.stringify(clientsList));
+                renderClients();
+            }
+        }
+
+        function saveAndGeneratePDF() {
+            const client = document.getElementById('clientName').value.trim() || 'Cliente General';
+            const locationStr = document.getElementById('location').value.trim() || 'No especificada';
+            const dateStr = document.getElementById('quoteDate').value;
+            const status = document.getElementById('quoteStatus').value;
+
+            if(currentItems.length === 0) {
+                alert('Agrega mínimo un concepto antes de guardar.');
+                return;
+            }
+
+            const totalSale = currentItems.reduce((acc, i) => acc + i.totalSaleItem, 0);
+            const folio = 'TYJ-' + Math.floor(1000 + Math.random() * 9000);
+
+            // Guardar en Historial
+            historyData.unshift({ folio, client, location: locationStr, date: dateStr, status, total: totalSale });
+            localStorage.setItem('tyj_history_v2', JSON.stringify(historyData));
+            renderHistory();
+
+            // Preparar PDF
+            document.getElementById('pdfFolio').innerText = `FOLIO: ${folio}`;
+            document.getElementById('pdfClient').innerText = client;
+            document.getElementById('pdfLocation').innerText = `Dirección: ${locationStr}`;
+            document.getElementById('pdfDate').innerText = dateStr;
+            document.getElementById('pdfStatus').innerText = status.toUpperCase();
+
+            const pdfTbody = document.getElementById('pdfTableBody');
+            pdfTbody.innerHTML = '';
+            currentItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>${item.name}</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.unit}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.qty}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">$${item.salePriceUnit.toFixed(2)}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right; font-weight: bold;">$${item.totalSaleItem.toFixed(2)}</td>
+                `;
+                pdfTbody.appendChild(tr);
+            });
+            document.getElementById('pdfTotalSale').innerText = `$${totalSale.toFixed(2)}`;
+
+            // Lanzar descarga optimizada móvil
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block';
+            
+            const opt = {
+                margin: 10,
+                filename: `Cotizacion_${client.replace(/\s+/g, '_')}.pdf`,
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+                alert('¡Cotización guardada e historial actualizado con éxito!');
+            });
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = '';
+
+            const filterDate = document.getElementById('filterDate').value;
+            let filtered = historyData;
+
+            if(filterDate) {
+                filtered = historyData.filter(q => q.date === filterDate);
+            }
+
+            if(filtered.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--muted);">No se encontraron cotizaciones.</p>';
+                return;
+            }
+
+            filtered.forEach((q, index) => {
+                let statusClass = 'status-pending';
+                if(q.status === 'Vendido') statusClass = 'status-won';
+                if(q.status === 'Rechazado') statusClass = 'status-lost';
+
+                const div = document.createElement('div');
+                div.className = 'history-card';
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                        <div>
+                            <strong style="font-size:16px;">${q.client}</strong>
+                            <div style="font-size:11px; color:var(--muted);">${q.folio} &bull; 📅 ${q.date}</div>
+                        </div>
+                        <span class="status-badge ${statusClass}">${q.status}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:8px; border-top:1px dashed var(--border);">
+                        <span style="font-size:15px; font-weight:800; color:var(--primary);">Total: $${q.total.toFixed(2)}</span>
+                        <select style="width: auto; padding: 5px 10px; font-size:12px;" onchange="cambiarEstadoHistorial(${index}, this.value)">
+                            <option value="">Cambiar Estado...</option>
+                            <option value="Pendiente">🟡 Pendiente</option>
+                            <option value="Vendido">🟢 Comprada</option>
+                            <option value="Rechazado">🔴 Rechazada</option>
+                        </select>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function cambiarEstadoHistorial(idx, nuevoEstado) {
+            if(!nuevoEstado) return;
+            historyData[idx].status = nuevoEstado;
+            localStorage.setItem('tyj_history_v2', JSON.stringify(historyData));
+            renderHistory();
+        }
+
+        function limpiarFiltroFecha() {
+            document.getElementById('filterDate').value = '';
+            renderHistory();
+        }
+
+        function renderClients() {
+            const container = document.getElementById('clientsListContainer');
+            container.innerHTML = '';
+
+            if(clientsList.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 10px; color: var(--muted);">No tienes clientes guardados aún.</p>';
+                return;
+            }
+
+            clientsList.forEach(c => {
+                const div = document.createElement('div');
+                div.style.padding = '12px 0';
+                div.style.borderBottom = '1px solid var(--border)';
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+                div.innerHTML = `
+                    <span>👤 <strong>${c}</strong></span>
+                    <button class="btn btn-primary" style="width:auto; padding:6px 12px; font-size:11px;" onclick="cargarClienteDirecto('${c}')">Nueva Cotización</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function cargarClienteDirecto(nombre) {
+            document.getElementById('clientName').value = nombre;
+            switchPage('quote', document.querySelectorAll('.nav-item')[0]);
+        }
+
+        function limpiarFormulario() {
+            currentItems = [];
+            renderCurrentItems();
+            document.getElementById('clientName').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
+        }
+    </script>
+</body>
+</html>
