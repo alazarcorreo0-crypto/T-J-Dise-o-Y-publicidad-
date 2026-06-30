@@ -7,7 +7,9 @@
     <style>
         :root {
             --primary: #1e1e2f;
-            --accent: #00b4d8;
+            --accent: #00b4d8; /* Cian */
+            --magenta: #e60067; /* Magenta del logo */
+            --yellow: #ffd166; /* Amarillo del logo */
             --accent-light: #e0f7fa;
             --bg: #f4f6f9;
             --card: #ffffff;
@@ -49,13 +51,17 @@
         }
 
         .app-header h1 {
-            font-size: 18px;
-            font-weight: 800;
+            font-size: 20px;
+            font-weight: 900;
             color: var(--primary);
             letter-spacing: 0.5px;
         }
 
-        .app-header h1 span { color: var(--accent); }
+        /* Colores basados en el logotipo CMYK */
+        .cmyk-t { color: var(--accent); }
+        .cmyk-amp { color: #f4c430; }
+        .cmyk-j { color: var(--magenta); }
+        .brand-sub { color: var(--primary); font-weight: 700; font-size: 14px; display: block; margin-top: 2px; }
 
         .app-page {
             display: none;
@@ -215,7 +221,7 @@
         input[type=range] { -webkit-appearance: none; width: 100%; background: #e0e0e0; height: 6px; border-radius: 3px; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-        /* Corrección Móvil para html2pdf */
+        /* Contenedor fuera de pantalla forzado para PDF */
         #pdf-wrapper {
             position: absolute;
             left: -9999px;
@@ -224,9 +230,9 @@
         }
 
         #pdf-template {
-            width: 780px; /* Forzamos ancho de escritorio para evitar recortes en pantallas de celular */
+            width: 790px;
             background: #ffffff;
-            padding: 35px;
+            padding: 50px 45px 45px 45px; /* Aumentamos margen superior para evitar recortes */
             box-sizing: border-box;
         }
         
@@ -246,7 +252,10 @@
 <body>
 
     <div class="app-header">
-        <h1>T&J <span>DISEÑO Y PUBLICIDAD</span></h1>
+        <h1>
+            <span class="cmyk-t">T</span><span class="cmyk-amp">&</span><span class="cmyk-j">J</span> 
+            <span class="brand-sub">DISEÑO Y PUBLICIDAD</span>
+        </h1>
     </div>
 
     <!-- PESTAÑA 1: COTIZAR -->
@@ -369,13 +378,17 @@
     </div>
 
 
-    <!-- Contenedor fuera de pantalla para que html2pdf trabaje en dimensiones perfectas -->
+    <!-- ================= PLANTILLA DE IMPRESIÓN CORREGIDA PARA EL PDF ================= -->
     <div id="pdf-wrapper">
         <div id="pdf-template">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 25px;">
+            <!-- Encabezado con Colores del Isotipo CMYK y margen preventivo -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1e1e2f; padding-bottom: 15px; margin-bottom: 25px; margin-top: 10px;">
                 <div>
-                    <h1 style="color: #1e1e2f; font-size: 28px; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">T&J DISEÑO Y PUBLICIDAD</h1>
-                    <p style="font-size: 12px; color: #00b4d8; font-weight: bold; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Soluciones Creativas e Impresión Profesional</p>
+                    <h1 style="color: #1e1e2f; font-size: 32px; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">
+                        <span style="color: #00b4d8;">T</span><span style="color: #f4c430;">&</span><span style="color: #e60067;">J</span> 
+                        <span style="color: #1e1e2f; font-size: 26px; font-weight: 800;">DISEÑO Y PUBLICIDAD</span>
+                    </h1>
+                    <p style="font-size: 11px; color: #00b4d8; font-weight: bold; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Soluciones Creativas e Impresión Profesional</p>
                 </div>
                 <div style="text-align: right;">
                     <div style="background-color: #1e1e2f; color: white; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block;" id="pdfFolio">#0000</div>
@@ -415,7 +428,7 @@
                 </div>
             </div>
 
-            <div style="margin-top: 70px; text-align: center; font-size: 11px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 15px; font-style: italic;">
+            <div style="margin-top: 70px; text-align: center; font-size: 11px; color: #8d99ae; border-top: 1px solid #edf2f4; padding-top: 10px;">
                 Gracias por su confianza. Los precios no incluyen IVA. Todo proyecto requiere el 50% de anticipo para comenzar producción.
             </div>
         </div>
@@ -606,9 +619,13 @@
 
             const element = document.getElementById('pdf-template');
             
+            // Nombre del PDF formateado correctamente: Cotizacion_[Cliente]_[Folio].pdf
+            const cleanClientName = quote.client.replace(/[^a-zA-Z0-9]/g, '_');
+            const calculatedFilename = `Cotizacion_${cleanClientName}_${quote.folio}.pdf`;
+
             const opt = {
                 margin: 10,
-                filename: `Cotizacion_${quote.client.replace(/\s+/g, '_')}_${quote.folio}.pdf`,
+                filename: calculatedFilename,
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0 },
                 jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
             };
